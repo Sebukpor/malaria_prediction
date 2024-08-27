@@ -103,7 +103,7 @@
 
             // Make the prediction
             const predictions = await model.predict(tensorImg).data();
-            const result = predictions[0] > 0.5 ? 'Infected' : 'Uninfected';
+            const result = predictions[0] > 0.5 ? 'Uninfected' : 'Infected';
 
             // Display the result
             resultDiv.innerText = `Prediction: ${result}`;
