@@ -4,7 +4,7 @@ Proprietary License
 
 All rights reserved.
 
-This software and its associated documentation files diabetic classification model are proprietary to DAS medhub and are not to be used, copied, modified, merged, published, distributed, sublicensed, or sold without prior written consent from [Your Name/Company].
+This software and its associated documentation files malaria classification model are proprietary to DAS medhub and are not to be used, copied, modified, merged, published, distributed, sublicensed, or sold without prior written consent from DAS medhub.
 
 Unauthorized use, reproduction, or distribution of the Software, or any portion of it, may result in severe civil and criminal penalties.
 
