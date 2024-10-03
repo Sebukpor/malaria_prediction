@@ -81,6 +81,10 @@
             const file = event.target.files[0];
             const reader = new FileReader();
 
+             // Clear previous results when a new image is uploaded
+            resultDiv.innerText = '';
+            predictButton.disabled = true;
+            
             reader.onload = function(e) {
                 uploadedImage.src = e.target.result;
                 uploadedImage.style.display = 'block';
