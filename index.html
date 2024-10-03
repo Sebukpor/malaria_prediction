@@ -81,14 +81,15 @@
             const file = event.target.files[0];
             const reader = new FileReader();
 
-             // Clear previous results when a new image is uploaded
+            // Clear previous results when a new image is uploaded
             resultDiv.innerText = '';
-            predictButton.disabled = true;
-            
+            predictButton.disabled = true; // Disable the button until the image is loaded
+
             reader.onload = function(e) {
                 uploadedImage.src = e.target.result;
                 uploadedImage.style.display = 'block';
                 predictButton.style.display = 'inline-block'; // Show the predict button
+                predictButton.disabled = false; // Enable the button after the image is displayed
             };
 
             reader.readAsDataURL(file);
