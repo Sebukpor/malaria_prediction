@@ -7,7 +7,6 @@ This project focuses on detecting malaria from blood smear images using a deep l
 - [Model Description](#model-description)
 - [Web Application](#web-application)
 - [Technologies Used](#technologies-used)
-- [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -43,27 +42,8 @@ The web application is a simple interface that allows users to upload a blood sm
 - **HTML/CSS/JavaScript:** For building the web application interface.
 - **Python:** For model development and preprocessing.
 
-## Installation
-
-To run this project locally, follow these steps:
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/sebukpor/malaria-prediction.git
-   ```
-2. **Navigate to the project directory:**
-   ```bash
-   cd malaria-prediction
-   ```
-3. **Install the required packages:**
-   Ensure you have Python installed, then install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. **Download the pre-trained model:**
-   Ensure you have the TensorFlow.js model files in the `model` directory.
-
-5. **Run the web application:**
+  
+1. **Run the web application:**
    Open `index.html` in your web browser to launch the application.
 
 ## Usage
