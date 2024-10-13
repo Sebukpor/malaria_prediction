@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malaria Detection - DAS medhub</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,6 +48,23 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+
+        #patient-info {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #export-button {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -62,8 +80,32 @@
 
     <div id="result"></div>
 
+    <button id="export-button" onclick="showForm()">Export Result</button>
+
+    <div id="patient-info">
+        <h3>Enter Patient Information</h3>
+        <label for="patient-id">Patient ID:</label>
+        <input type="text" id="patient-id"><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name"><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age"><br><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <button onclick="exportAsPDF()">Submit & Export PDF</button>
+    </div>
+
     <script>
         let model;
+        let predictionResult;
 
         async function loadModel() {
             model = await tf.loadGraphModel('model/model.json');
@@ -76,6 +118,8 @@
         const uploadedImage = document.getElementById('uploaded-image');
         const predictButton = document.getElementById('predict-button');
         const resultDiv = document.getElementById('result');
+        const patientInfoDiv = document.getElementById('patient-info');
+        const exportButton = document.getElementById('export-button');
 
         imageUpload.addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -84,6 +128,8 @@
             // Clear previous results when a new image is uploaded
             resultDiv.innerText = '';
             predictButton.disabled = true; // Disable the button until the image is loaded
+            exportButton.style.display = 'none'; // Hide export button initially
+            patientInfoDiv.style.display = 'none'; // Hide the patient info form
 
             reader.onload = function(e) {
                 uploadedImage.src = e.target.result;
@@ -108,11 +154,44 @@
 
             // Make the prediction
             const predictions = await model.predict(tensorImg).data();
-            const result = predictions[0] > 0.5 ? 'Uninfected' : 'Infected';
+            predictionResult = predictions[0] > 0.5 ? 'Uninfected' : 'Infected';
 
             // Display the result
-            resultDiv.innerText = `Prediction: ${result}`;
-            predictButton.disabled = false; // Enable the button again
+            resultDiv.innerText = `Prediction: ${predictionResult}`;
+            exportButton.style.display = 'block'; // Show export button after prediction
+        }
+
+        function showForm() {
+            // Show the patient info form when the export button is clicked
+            patientInfoDiv.style.display = 'block';
+        }
+
+        function exportAsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Get the patient information
+            const patientID = document.getElementById('patient-id').value;
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+
+            // Add the information to the PDF
+            doc.text(20, 20, `Patient ID: ${patientID}`);
+            doc.text(20, 30, `Name: ${name}`);
+            doc.text(20, 40, `Age: ${age}`);
+            doc.text(20, 50, `Gender: ${gender}`);
+            doc.text(20, 60, `Prediction: ${predictionResult}`);
+
+            // Add the uploaded image to the PDF
+            const imgData = uploadedImage.src;
+            doc.addImage(imgData, 'JPEG', 20, 70, 150, 100);
+
+            // Save the PDF
+            doc.save(`${patientID}_malaria_detection_result.pdf`);
+
+            // Clear the form after exporting
+            patientInfoDiv.style.display = 'none';
         }
     </script>
 </body>
